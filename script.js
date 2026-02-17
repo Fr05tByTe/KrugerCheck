@@ -291,7 +291,7 @@ function toId(name) {
     .replace(/^-|-$/g, "");
 }
 
-const IMAGE_CACHE_KEY = "kruger-animal-image-cache-v1";
+const IMAGE_CACHE_KEY = "kruger-animal-image-cache-v2";
 const animalImageCache = loadAnimalImageCache();
 const animalImageRequests = new Map();
 
@@ -316,16 +316,14 @@ const WIKIPEDIA_TITLE_OVERRIDES = {
 };
 
 const IMAGE_URL_OVERRIDES = {
+  "barn-owl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Tyto_alba_-British_Wildlife_Centre-8a.jpg/640px-Tyto_alba_-British_Wildlife_Centre-8a.jpg",
+  "brown-house-snake": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Boaedon_capensis_2.jpg/640px-Boaedon_capensis_2.jpg",
+  "cape-grysbok": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Raphicerus_melanotis.jpg/640px-Raphicerus_melanotis.jpg",
   "leopard-tortoise": buildSpeciesIllustration("Leopard tortoise", "Stigmochelys pardalis", "#6d7d53", "🐢"),
   "ostrich": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Ostrich_male_RWD.jpg/640px-Ostrich_male_RWD.jpg",
+  "rooihartebeest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Alcelaphus_buselaphus2.jpg/640px-Alcelaphus_buselaphus2.jpg",
   "shrew": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Common_shrew.jpg/640px-Common_shrew.jpg",
-  // These species intentionally use live Wikimedia/Wikipedia lookups in resolveAnimalImage,
-  // so cards display real wildlife photos instead of generated illustrations.
-  // - barn-owl
-  // - brown-house-snake
-  // - cape-grysbok
-  // - rooihartebeest / rooihardbees
-  // - southern-tree-agama
+  "southern-tree-agama": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Acanthocercus_atricollis_male.jpg/640px-Acanthocercus_atricollis_male.jpg"
 };
 
 function buildSpeciesIllustration(name, subtitle, accent, emoji) {
