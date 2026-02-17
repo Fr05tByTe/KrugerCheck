@@ -316,15 +316,16 @@ const WIKIPEDIA_TITLE_OVERRIDES = {
 };
 
 const IMAGE_URL_OVERRIDES = {
-  "barn-owl": buildSpeciesIllustration("Barn owl", "Tyto alba", "#4a5d7a", "🦉"),
-  "brown-house-snake": buildSpeciesIllustration("Brown house snake", "Boaedon capensis", "#7d5d3b", "🐍"),
-  "cape-grysbok": buildSpeciesIllustration("Cape grysbok", "Raphicerus melanotis", "#667b53", "🦌"),
   "leopard-tortoise": buildSpeciesIllustration("Leopard tortoise", "Stigmochelys pardalis", "#6d7d53", "🐢"),
-  "ostrich": buildSpeciesIllustration("Ostrich (male)", "Struthio camelus", "#4e5159", "🪶♂️"),
-  "rooihartebeest": buildSpeciesIllustration("Rooihartebeest", "Red hartebeest", "#8a4f32", "🦬"),
-  "rooihardbees": buildSpeciesIllustration("Rooihardbees", "Red hartebeest", "#8a4f32", "🦬"),
+  "ostrich": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Ostrich_male_RWD.jpg/640px-Ostrich_male_RWD.jpg",
   "shrew": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Common_shrew.jpg/640px-Common_shrew.jpg",
-  "southern-tree-agama": buildSpeciesIllustration("Southern tree agama", "Acanthocercus atricollis", "#4a7b64", "🦎")
+  // These species intentionally use live Wikimedia/Wikipedia lookups in resolveAnimalImage,
+  // so cards display real wildlife photos instead of generated illustrations.
+  // - barn-owl
+  // - brown-house-snake
+  // - cape-grysbok
+  // - rooihartebeest / rooihardbees
+  // - southern-tree-agama
 };
 
 function buildSpeciesIllustration(name, subtitle, accent, emoji) {
