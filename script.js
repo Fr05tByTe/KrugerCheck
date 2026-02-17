@@ -316,15 +316,20 @@ const WIKIPEDIA_TITLE_OVERRIDES = {
 };
 
 const IMAGE_URL_OVERRIDES = {
-  "barn-owl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Tyto_alba_-British_Wildlife_Centre-8a.jpg/640px-Tyto_alba_-British_Wildlife_Centre-8a.jpg",
-  "brown-house-snake": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Lamprophis_fuliginosus.jpg/640px-Lamprophis_fuliginosus.jpg",
-  "cape-grysbok": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Raphicerus_melanotis.jpg/640px-Raphicerus_melanotis.jpg",
-  "leopard-tortoise": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Stigmochelys_pardalis.jpg/640px-Stigmochelys_pardalis.jpg",
-  "ostrich": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Struthio_camelus_male_RWD.jpg/640px-Struthio_camelus_male_RWD.jpg",
-  "rooihartebeest": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Alcelaphus_buselaphus2.jpg/640px-Alcelaphus_buselaphus2.jpg",
+  "barn-owl": buildSpeciesIllustration("Barn owl", "Tyto alba", "#4a5d7a", "🦉"),
+  "brown-house-snake": buildSpeciesIllustration("Brown house snake", "Boaedon capensis", "#7d5d3b", "🐍"),
+  "cape-grysbok": buildSpeciesIllustration("Cape grysbok", "Raphicerus melanotis", "#667b53", "🦌"),
+  "leopard-tortoise": buildSpeciesIllustration("Leopard tortoise", "Stigmochelys pardalis", "#6d7d53", "🐢"),
+  "ostrich": buildSpeciesIllustration("Ostrich (male)", "Struthio camelus", "#4e5159", "🪶♂️"),
+  "rooihartebeest": buildSpeciesIllustration("Rooihartebeest", "Red hartebeest", "#8a4f32", "🦬"),
+  "rooihardbees": buildSpeciesIllustration("Rooihardbees", "Red hartebeest", "#8a4f32", "🦬"),
   "shrew": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Common_shrew.jpg/640px-Common_shrew.jpg",
-  "southern-tree-agama": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Acanthocercus_atricollis_%28Southern_tree_agama%29_male.jpg/640px-Acanthocercus_atricollis_%28Southern_tree_agama%29_male.jpg"
+  "southern-tree-agama": buildSpeciesIllustration("Southern tree agama", "Acanthocercus atricollis", "#4a7b64", "🦎")
 };
+
+function buildSpeciesIllustration(name, subtitle, accent, emoji) {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='800' height='520'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='${accent}'/><stop offset='100%' stop-color='#1f3325'/></linearGradient></defs><rect width='100%' height='100%' fill='url(#bg)'/><circle cx='96' cy='96' r='72' fill='rgba(255,255,255,0.15)'/><text x='96' y='118' text-anchor='middle' fill='white' font-family='Arial' font-size='70'>${emoji}</text><text x='50%' y='56%' text-anchor='middle' fill='white' font-family='Arial' font-size='44' font-weight='700'>${name}</text><text x='50%' y='66%' text-anchor='middle' fill='#f0f7ef' font-family='Arial' font-size='28'>${subtitle}</text><text x='50%' y='80%' text-anchor='middle' fill='#d7e6d2' font-family='Arial' font-size='20'>Kruger wildlife card</text></svg>`)}`;
+}
 
 function buildFallbackImage(name, category) {
   const emoji = category === "Bird" ? "🦅" : category === "Reptile" ? "🐊" : "🐾";
@@ -590,8 +595,14 @@ function renderAnimals() {
     card.querySelector("h3").textContent = animal.name;
     fact.textContent = animal.about;
 
-    image.src = buildFallbackImage(animal.name, animal.category);
+    const fallbackImage = buildFallbackImage(animal.name, animal.category);
+    image.src = fallbackImage;
     image.alt = animal.name;
+    image.addEventListener("error", () => {
+      if (image.src !== fallbackImage) {
+        image.src = fallbackImage;
+      }
+    });
     resolveAnimalImage(animal).then((resolvedImage) => {
       if (resolvedImage) {
         image.src = resolvedImage;
