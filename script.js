@@ -61,7 +61,6 @@ const BASE_ANIMAL_NAMES = [
   "House mouse",
   "Impala",
   "African scops owl",
-  "African cuckoo hawk",
   "African fish eagle",
   "African harrier-hawk",
   "African rock python",
@@ -92,7 +91,6 @@ const BASE_ANIMAL_NAMES = [
   "Blou wildebeest",
   "Boomslang",
   "Brown house snake",
-  "Meller’s mongoose",
   "Midas free-tailed bat",
   "Mountain reedbuck",
   "Multimammate mouse",
@@ -129,7 +127,6 @@ const BASE_ANIMAL_NAMES = [
   "Schlieffen’s bat",
   "Schreiber’s long-fingered bat",
   "Scrub hare",
-  "Selous’ mongoose",
   "Serval",
   "Sharpe’s grysbok",
   "Short-snouted elephant shrew",
@@ -234,7 +231,6 @@ const ABOUT_HABITATS = [
 
 const CATEGORY_OVERRIDES = {
   "African scops owl": "Bird",
-  "African cuckoo hawk": "Bird",
   "African fish eagle": "Bird",
   "African harrier-hawk": "Bird",
   "African wood owl": "Bird",
