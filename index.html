@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#2f6b24" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Kruger Trip Animal Tracker</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Kruger National Park Trip Animal Tracker</h1>
+      <p>Create trips, check off animals you've seen, and revisit your sightings.</p>
+    </header>
+
+    <main>
+      <section class="card" id="trip-manager">
+        <h2>Trips</h2>
+        <div class="trip-controls">
+          <input id="trip-name" type="text" placeholder="e.g. June 2026 Family Safari" maxlength="60" />
+          <button id="create-trip">Create Trip</button>
+          <button id="delete-trip" class="danger">Delete Selected Trip</button>
+        </div>
+        <label for="trip-select">Select trip:</label>
+        <select id="trip-select"></select>
+        <p id="trip-meta" class="muted"></p>
+      </section>
+
+      <section class="card" id="filters">
+        <h2>Animals in Kruger</h2>
+        <div class="filter-row">
+          <input id="search" type="search" placeholder="Search animals..." />
+          <select id="category-filter">
+            <option value="all">All categories</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="card" id="animal-list" aria-live="polite"></section>
+
+      <section class="card" id="summary">
+        <h2>Trip Summary</h2>
+        <p id="summary-text"></p>
+        <ul id="seen-list"></ul>
+      </section>
+    </main>
+
+    <template id="animal-card-template">
+      <article class="animal-card">
+        <img alt="" loading="lazy" />
+        <div class="animal-content">
+          <h3></h3>
+          <p class="animal-category"></p>
+          <label>
+            <input type="checkbox" />
+            Seen on this trip
+          </label>
+        </div>
+      </article>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
