@@ -33,9 +33,6 @@
         <h2>Animals in Kruger</h2>
         <div class="filter-row">
           <input id="search" type="search" placeholder="Search animals..." />
-          <select id="category-filter">
-            <option value="all">All categories</option>
-          </select>
         </div>
       </section>
 
@@ -51,12 +48,14 @@
     <template id="animal-card-template">
       <article class="animal-card">
         <img alt="" loading="lazy" />
+        <div class="animal-back" aria-live="polite">
+          <h4>Interesting fact</h4>
+          <p class="animal-fact"></p>
+        </div>
         <div class="animal-content">
           <h3></h3>
-          <p class="animal-category"></p>
           <label>
             <input type="checkbox" />
-            Seen on this trip
           </label>
         </div>
       </article>
