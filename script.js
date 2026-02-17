@@ -169,7 +169,8 @@ const WIKIPEDIA_TITLE_OVERRIDES = {
 };
 
 function buildFallbackImage(name, category) {
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='800' height='520'><rect width='100%' height='100%' fill='#355c3b'/><text x='50%' y='44%' text-anchor='middle' fill='white' font-family='Arial' font-size='30'>${name}</text><text x='50%' y='56%' text-anchor='middle' fill='#d8efd9' font-family='Arial' font-size='22'>${category}</text><text x='50%' y='72%' text-anchor='middle' fill='#d8efd9' font-family='Arial' font-size='20'>Image unavailable</text></svg>`)}`;
+  const emoji = category === "Bird" ? "🦅" : category === "Reptile" ? "🐊" : "🐾";
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='800' height='520'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#2d4f35'/><stop offset='100%' stop-color='#4f7a52'/></linearGradient></defs><rect width='100%' height='100%' fill='url(#bg)'/><text x='50%' y='34%' text-anchor='middle' fill='white' font-family='Arial' font-size='84'>${emoji}</text><text x='50%' y='52%' text-anchor='middle' fill='white' font-family='Arial' font-size='30'>${name}</text><text x='50%' y='63%' text-anchor='middle' fill='#e3f4e4' font-family='Arial' font-size='22'>${category}</text><text x='50%' y='78%' text-anchor='middle' fill='#d8efd9' font-family='Arial' font-size='20'>Kruger wildlife card</text></svg>`)}`;
 }
 
 function loadAnimalImageCache() {
@@ -221,6 +222,29 @@ async function fetchWikipediaThumbnail(title) {
   return withThumb ? withThumb.thumbnail.source : null;
 }
 
+async function fetchWikimediaCommonsImage(animal) {
+  const url = new URL("https://commons.wikimedia.org/w/api.php");
+  url.searchParams.set("origin", "*");
+  url.searchParams.set("format", "json");
+  url.searchParams.set("action", "query");
+  url.searchParams.set("generator", "search");
+  url.searchParams.set("gsrsearch", `${animal.name} ${animal.category}`);
+  url.searchParams.set("gsrlimit", "1");
+  url.searchParams.set("prop", "pageimages");
+  url.searchParams.set("piprop", "thumbnail");
+  url.searchParams.set("pithumbsize", "640");
+
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    return null;
+  }
+
+  const data = await response.json();
+  const pages = data.query && data.query.pages ? Object.values(data.query.pages) : [];
+  const withThumb = pages.find((page) => page && page.thumbnail && page.thumbnail.source);
+  return withThumb ? withThumb.thumbnail.source : null;
+}
+
 async function resolveAnimalImage(animal) {
   const cached = animalImageCache[animal.id];
   if (typeof cached === "string") {
@@ -245,9 +269,20 @@ async function resolveAnimalImage(animal) {
       }
     }
 
-    animalImageCache[animal.id] = null;
+    try {
+      const commonsImage = await fetchWikimediaCommonsImage(animal);
+      if (commonsImage) {
+        animalImageCache[animal.id] = commonsImage;
+        persistAnimalImageCache();
+        return commonsImage;
+      }
+    } catch {
+      // Use local fallback image below.
+    }
+
+    animalImageCache[animal.id] = buildFallbackImage(animal.name, animal.category);
     persistAnimalImageCache();
-    return null;
+    return animalImageCache[animal.id];
   })();
 
   animalImageRequests.set(animal.id, request);
@@ -327,7 +362,35 @@ function createTripId() {
 }
 
 function createInterestingFact(animal) {
-  return `${animal.name} is one of Kruger's well-known ${animal.category.toLowerCase()}s. Tap again to flip this card back and keep tracking your sightings.`;
+  const mammalFacts = [
+    `${animal.name} often leaves behind tracks and dung clues that experienced guides use to follow it through Kruger.`,
+    `Many sightings of ${animal.name} happen in the cool early morning, when animals are more active and easier to spot.`,
+    `${animal.name} is part of Kruger's rich mammal diversity, which helps keep the park's food web in balance.`,
+    `When ${animal.name} is nearby, bird alarm calls and fresh spoor can reveal its presence before you see it.`
+  ];
+  const birdFacts = [
+    `${animal.name} is often easiest to identify by its shape and behaviour before you can confirm every colour detail.`,
+    `${animal.name} can be a great indicator species—bird activity often hints at water, prey, or movement in the area.`,
+    `${animal.name} sightings are often best near dawn, when birds call frequently and become more visible.`
+  ];
+  const reptileFacts = [
+    `${animal.name} is ectothermic, so sunning spots and warm surfaces are key places to look when temperatures rise.`,
+    `${animal.name} tends to be more active when environmental conditions are right, making timing important for sightings.`,
+    `${animal.name} plays an important role in Kruger ecosystems by helping regulate prey populations.`
+  ];
+
+  let pool = mammalFacts;
+  if (animal.category === "Bird") {
+    pool = birdFacts;
+  } else if (animal.category === "Reptile") {
+    pool = reptileFacts;
+  }
+
+  const index = animal.id
+    .split("")
+    .reduce((sum, char) => sum + char.charCodeAt(0), 0) % pool.length;
+
+  return pool[index];
 }
 
 function getSelectedTrip() {
