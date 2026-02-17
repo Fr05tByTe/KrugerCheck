@@ -122,6 +122,84 @@ const ANIMAL_DATA = [
       "Chacma baboons live in structured troops with clear social ranks, and they often use elevated rocks and trees as strategic lookout points."
   },
   {
+    name: "Blue Wildebeest",
+    category: "Mammal",
+    about:
+      "Blue wildebeest form mobile herds that track grazing conditions, and their restless movement often draws mixed groups of zebra and antelope."
+  },
+  {
+    name: "Waterbuck",
+    category: "Mammal",
+    about:
+      "Waterbuck stay close to rivers and pans, where their shaggy coats and white rump ring make them easy to identify at a distance."
+  },
+  {
+    name: "Sable Antelope",
+    category: "Mammal",
+    about:
+      "Sable antelope favor well-wooded savanna, and mature bulls stand out with sweeping scimitar horns and a bold black-and-white face pattern."
+  },
+  {
+    name: "Roan Antelope",
+    category: "Mammal",
+    about:
+      "Roan antelope are one of Kruger's rarer antelope species, typically moving in small herds and preferring open woodland with tall grasses."
+  },
+  {
+    name: "Eland",
+    category: "Mammal",
+    about:
+      "Eland are Africa’s largest antelope and can clear obstacles surprisingly well, despite their heavy build and calm, deliberate gait."
+  },
+  {
+    name: "Bushbuck",
+    category: "Mammal",
+    about:
+      "Bushbuck are usually solitary and secretive, slipping through riverine cover where their striped markings break up their outline."
+  },
+  {
+    name: "Steenbok",
+    category: "Mammal",
+    about:
+      "Steenbok are small antelope that often freeze before bounding away, making patience essential for good sightings in open scrub."
+  },
+  {
+    name: "Common Duiker",
+    category: "Mammal",
+    about:
+      "Common duikers browse leaves and fruit in dense cover and are frequently seen darting across roads at dawn or dusk."
+  },
+  {
+    name: "Klipspringer",
+    category: "Mammal",
+    about:
+      "Klipspringers are specialist rock dwellers that balance on the tips of their hooves, moving with precision over steep outcrops."
+  },
+  {
+    name: "Sharpe's Grysbok",
+    category: "Mammal",
+    about:
+      "Sharpe’s grysboks are tiny nocturnal antelope that rely on stillness and dense vegetation to avoid detection."
+  },
+  {
+    name: "Tsessebe",
+    category: "Mammal",
+    about:
+      "Tsessebe are among the fastest antelope in southern Africa and are often seen in open plains where early threat detection is vital."
+  },
+  {
+    name: "Bat-eared Fox",
+    category: "Mammal",
+    about:
+      "Bat-eared foxes use their oversized ears to locate insects underground, especially termites on warm evenings."
+  },
+  {
+    name: "Side-striped Jackal",
+    category: "Mammal",
+    about:
+      "Side-striped jackals are less conspicuous than black-backed jackals and usually patrol denser habitats near watercourses."
+  },
+  {
     name: "Common Ostrich",
     category: "Bird",
     about:
@@ -170,6 +248,66 @@ const ANIMAL_DATA = [
       "Pied kingfishers are famous for hovering over water before diving, a fishing style that makes their feeding behavior easy to recognize."
   },
   {
+    name: "Bateleur",
+    category: "Bird",
+    about:
+      "Bateleurs are short-tailed eagles that rock from side to side in flight, often covering large areas while searching for carrion and live prey."
+  },
+  {
+    name: "Kori Bustard",
+    category: "Bird",
+    about:
+      "Kori bustards are among the heaviest flying birds, usually seen striding across open ground while feeding on insects and small vertebrates."
+  },
+  {
+    name: "Grey Heron",
+    category: "Bird",
+    about:
+      "Grey herons stalk fish and amphibians with slow, deliberate steps, then strike with a rapid bill thrust."
+  },
+  {
+    name: "Yellow-billed Stork",
+    category: "Bird",
+    about:
+      "Yellow-billed storks feed by sweeping partly open bills through shallow water until they snap shut on prey."
+  },
+  {
+    name: "Marabou Stork",
+    category: "Bird",
+    about:
+      "Marabou storks are powerful scavengers that gather near carcasses and water edges, often alongside vultures."
+  },
+  {
+    name: "White-backed Vulture",
+    category: "Bird",
+    about:
+      "White-backed vultures soar on thermals and descend quickly to carcasses, playing a critical role in keeping ecosystems clean."
+  },
+  {
+    name: "Helmeted Guineafowl",
+    category: "Bird",
+    about:
+      "Helmeted guineafowl move in noisy flocks that scratch for seeds and insects, often giving loud alarm calls when disturbed."
+  },
+  {
+    name: "African Jacana",
+    category: "Bird",
+    about:
+      "African jacanas walk across floating vegetation on elongated toes, a distinctive behavior on Kruger’s calmer pans."
+  },
+  {
+    name: "White-fronted Bee-eater",
+    category: "Bird",
+    about:
+      "White-fronted bee-eaters perch in groups near rivers, sallying into the air to catch flying insects before returning to exposed branches."
+  },
+  {
+    name: "Southern Carmine Bee-eater",
+    category: "Bird",
+    about:
+      "Southern carmine bee-eaters nest in riverbank colonies and create striking pink waves when flocks rise together."
+  },
+  {
     name: "Nile Crocodile",
     category: "Reptile",
     about:
@@ -186,6 +324,24 @@ const ANIMAL_DATA = [
     category: "Reptile",
     about:
       "Nile monitors are strong swimmers and opportunistic hunters, frequently seen basking on banks before slipping quickly into the water when approached."
+  },
+  {
+    name: "Leopard Tortoise",
+    category: "Reptile",
+    about:
+      "Leopard tortoises are widespread grazers in Kruger, recognized by domed shells patterned with bold dark blotches."
+  },
+  {
+    name: "Southern African Python",
+    category: "Reptile",
+    about:
+      "Southern African pythons often shelter in rocky crevices or thickets and may bask near water during cooler mornings."
+  },
+  {
+    name: "Black Mamba",
+    category: "Reptile",
+    about:
+      "Black mambas are swift, alert snakes that use speed and elevation in shrubs or trees to avoid conflict when possible."
   }
 ];
 
