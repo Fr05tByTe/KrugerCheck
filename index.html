@@ -48,6 +48,7 @@
     <template id="animal-card-template">
       <article class="animal-card">
         <img alt="" loading="lazy" />
+        <button class="expand-image" type="button" aria-label="Open larger image">↗</button>
         <div class="animal-back" aria-live="polite">
           <h4>About</h4>
           <p class="animal-fact"></p>
@@ -60,6 +61,13 @@
         </div>
       </article>
     </template>
+
+    <dialog id="image-modal" class="image-modal">
+      <form method="dialog">
+        <button type="submit" class="close-modal" aria-label="Close enlarged image">×</button>
+      </form>
+      <img id="image-modal-preview" alt="" />
+    </dialog>
 
     <script src="script.js"></script>
   </body>
