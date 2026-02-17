@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#2f6b24"/>
+  <circle cx="256" cy="204" r="96" fill="#f1f6ec"/>
+  <path d="M146 368c36-56 184-56 220 0" stroke="#f1f6ec" stroke-width="38" fill="none" stroke-linecap="round"/>
+  <text x="256" y="468" text-anchor="middle" fill="#d8e8cf" font-size="56" font-family="Arial">KRUGER</text>
+</svg>
