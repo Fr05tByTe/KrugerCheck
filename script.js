@@ -151,6 +151,31 @@ const BASE_ANIMAL_NAMES = [
   "Yellow-spotted rock hyrax",
 ];
 
+const GROUPED_SMALL_MAMMALS = ["Bat", "Rat", "Mouse", "Shrew"];
+
+const COLLAPSED_ANIMAL_NAMES = BASE_ANIMAL_NAMES
+  .filter((name) => {
+    const lowerName = name.toLowerCase();
+    if (/\brat\b/.test(lowerName)) {
+      return false;
+    }
+
+    if (/\bmouse\b/.test(lowerName)) {
+      return false;
+    }
+
+    if (/\bshrew\b/.test(lowerName)) {
+      return false;
+    }
+
+    if (/\bbat\b/.test(lowerName) && !/\bbat-eared fox\b/.test(lowerName)) {
+      return false;
+    }
+
+    return true;
+  })
+  .concat(GROUPED_SMALL_MAMMALS);
+
 const ABOUT_BEHAVIORS = [
   "is often most active in cooler dawn and dusk periods, when patient scanning along roads and drainage lines improves sightings",
   "uses camouflage and stillness effectively, so brief movement is often the clue that gives it away in Kruger habitats",
@@ -169,7 +194,7 @@ const ABOUT_HABITATS = [
   "seasonal wetland margins"
 ];
 
-const ANIMAL_DATA = BASE_ANIMAL_NAMES.map((name, index) => ({
+const ANIMAL_DATA = COLLAPSED_ANIMAL_NAMES.map((name, index) => ({
   name,
   category: "Mammal",
   about: `${name} ${ABOUT_BEHAVIORS[index % ABOUT_BEHAVIORS.length]} around ${ABOUT_HABITATS[index % ABOUT_HABITATS.length]}.`
