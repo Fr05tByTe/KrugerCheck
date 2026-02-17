@@ -64,7 +64,6 @@ const BASE_ANIMAL_NAMES = [
   "African scops owl",
   "African cuckoo hawk",
   "African fish eagle",
-  "African goshawk",
   "African harrier-hawk",
   "African rock python",
   "Amur falcon",
@@ -179,12 +178,11 @@ const BASE_ANIMAL_NAMES = [
   "Wahlberg's eagle",
   "Ostrich",
   "African wood owl",
-  "Wood owl",
   "White-headed vulture",
   "White-backed vulture",
   "Palm-nut vulture",
-  "Grysbok",
-  "Tortoise",
+  "Cape grysbok",
+  "Leopard tortoise",
   "Secretarybird",
   "Tawny eagle",
   "Mozambique spitting cobra",
@@ -240,10 +238,8 @@ const CATEGORY_OVERRIDES = {
   "African scops owl": "Bird",
   "African cuckoo hawk": "Bird",
   "African fish eagle": "Bird",
-  "African goshawk": "Bird",
   "African harrier-hawk": "Bird",
   "African wood owl": "Bird",
-  "Wood owl": "Bird",
   "Amur falcon": "Bird",
   "Ayres's hawk-eagle": "Bird",
   "Barn owl": "Bird",
@@ -279,9 +275,11 @@ const CATEGORY_OVERRIDES = {
   "Puff adder": "Reptile",
   "Rock monitor": "Reptile",
   "Southern tree agama": "Reptile",
-  "Tortoise": "Reptile"
+  "Leopard tortoise": "Reptile"
 };
-const ANIMAL_DATA = COLLAPSED_ANIMAL_NAMES.map((name, index) => ({
+const SORTED_ANIMAL_NAMES = [...COLLAPSED_ANIMAL_NAMES].sort((a, b) => a.localeCompare(b));
+
+const ANIMAL_DATA = SORTED_ANIMAL_NAMES.map((name, index) => ({
   name,
   category: CATEGORY_OVERRIDES[name] || "Mammal",
   about: `${name} ${ABOUT_BEHAVIORS[index % ABOUT_BEHAVIORS.length]} around ${ABOUT_HABITATS[index % ABOUT_HABITATS.length]}.`
@@ -308,7 +306,25 @@ const WIKIPEDIA_TITLE_OVERRIDES = {
   "Rock hyrax (Dassie)": ["Rock hyrax", "Dassie"],
   "Wahlberg's eagle": ["Wahlberg's eagle"],
   "African wood owl": ["African wood owl", "Wood owl"],
-  "Wood owl": ["African wood owl", "Wood owl"]
+  "Barn owl": ["Barn owl"],
+  "Brown house snake": ["Brown house snake"],
+  "Cape grysbok": ["Cape grysbok", "Grysbok"],
+  "Leopard tortoise": ["Leopard tortoise"],
+  "Ostrich": ["Common ostrich", "Ostrich"],
+  "Rooihartebeest": ["Red hartebeest", "Rooihartebeest"],
+  "Shrew": ["Shrew"],
+  "Southern tree agama": ["Southern tree agama"]
+};
+
+const IMAGE_URL_OVERRIDES = {
+  "barn-owl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Tyto_alba_-British_Wildlife_Centre-8a.jpg/640px-Tyto_alba_-British_Wildlife_Centre-8a.jpg",
+  "brown-house-snake": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Lamprophis_fuliginosus.jpg/640px-Lamprophis_fuliginosus.jpg",
+  "cape-grysbok": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Raphicerus_melanotis.jpg/640px-Raphicerus_melanotis.jpg",
+  "leopard-tortoise": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Stigmochelys_pardalis.jpg/640px-Stigmochelys_pardalis.jpg",
+  "ostrich": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Struthio_camelus_male_RWD.jpg/640px-Struthio_camelus_male_RWD.jpg",
+  "rooihartebeest": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Alcelaphus_buselaphus2.jpg/640px-Alcelaphus_buselaphus2.jpg",
+  "shrew": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Common_shrew.jpg/640px-Common_shrew.jpg",
+  "southern-tree-agama": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Acanthocercus_atricollis_%28Southern_tree_agama%29_male.jpg/640px-Acanthocercus_atricollis_%28Southern_tree_agama%29_male.jpg"
 };
 
 function buildFallbackImage(name, category) {
@@ -389,6 +405,13 @@ async function fetchWikimediaCommonsImage(animal) {
 }
 
 async function resolveAnimalImage(animal) {
+  const forcedImage = IMAGE_URL_OVERRIDES[animal.id];
+  if (forcedImage) {
+    animalImageCache[animal.id] = forcedImage;
+    persistAnimalImageCache();
+    return forcedImage;
+  }
+
   const cached = animalImageCache[animal.id];
   if (typeof cached === "string") {
     return cached;
@@ -455,6 +478,7 @@ const els = {
   animalList: document.getElementById("animal-list"),
   summaryText: document.getElementById("summary-text"),
   seenList: document.getElementById("seen-list"),
+  tripNotes: document.getElementById("trip-notes"),
   cardTemplate: document.getElementById("animal-card-template"),
   imageModal: document.getElementById("image-modal"),
   imageModalPreview: document.getElementById("image-modal-preview")
@@ -473,7 +497,8 @@ function loadState() {
           id: defaultTripId,
           name: "My First Kruger Trip",
           createdAt: new Date().toISOString(),
-          sightings: {}
+          sightings: {},
+          notes: ""
         }
       }
     };
@@ -518,7 +543,8 @@ function renderTrips() {
       id,
       name: "My First Kruger Trip",
       createdAt: new Date().toISOString(),
-      sightings: {}
+      sightings: {},
+      notes: ""
     };
     state.selectedTripId = id;
     saveState();
@@ -534,8 +560,13 @@ function renderTrips() {
   });
 
   const selected = getSelectedTrip();
+  if (typeof selected.notes !== "string") {
+    selected.notes = "";
+    saveState();
+  }
   const date = new Date(selected.createdAt).toLocaleString();
   els.tripMeta.textContent = `Created: ${date}`;
+  els.tripNotes.value = selected.notes;
 }
 
 function renderAnimals() {
@@ -622,7 +653,8 @@ function createTrip() {
     id,
     name: name || `Kruger Trip ${Object.keys(state.trips).length + 1}`,
     createdAt: new Date().toISOString(),
-    sightings: {}
+    sightings: {},
+    notes: ""
   };
   state.selectedTripId = id;
   els.tripName.value = "";
@@ -657,6 +689,15 @@ els.tripSelect.addEventListener("change", (event) => {
   rerender();
 });
 els.search.addEventListener("input", renderAnimals);
+els.tripNotes.addEventListener("input", (event) => {
+  const trip = getSelectedTrip();
+  if (!trip) {
+    return;
+  }
+
+  trip.notes = event.target.value;
+  saveState();
+});
 els.imageModal.addEventListener("click", (event) => {
   const box = els.imageModal.getBoundingClientRect();
   const inside =
