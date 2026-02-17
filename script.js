@@ -1,143 +1,192 @@
 const STORAGE_KEY = "kruger-trip-tracker-v2";
 
-const MAMMAL_NAMES = [
-  "Aardvark",
-  "Aardwolf",
-  "African Wild Cat",
-  "African Wild Dog",
-  "Angolan Free-tailed Bat",
-  "Banana Bat",
-  "Bat-eared Fox",
-  "Black-backed Jackal",
-  "Black-footed Cat",
-  "Black Rhinoceros",
-  "Blue Duiker",
-  "Blue Wildebeest",
-  "Bushbuck",
-  "Bushpig",
-  "Cape Clawless Otter",
-  "Cape Fox",
-  "Cape Hare",
-  "Cape Porcupine",
-  "Caracal",
-  "Cheetah",
-  "Chacma Baboon",
-  "Civet",
-  "Common Dwarf Mongoose",
-  "Common Eland",
-  "Common Genet",
-  "Common Reedbuck",
-  "Common Warthog",
-  "Crested Porcupine",
-  "Egyptian Free-tailed Bat",
-  "Four-toed Elephant Shrew",
-  "Giraffe",
-  "Greater Cane Rat",
-  "Greater Galago",
-  "Greater Kudu",
-  "Grey Duiker",
-  "Grey Rhebok",
-  "Honey Badger",
-  "Hippopotamus",
-  "Impala",
-  "Jameson’s Red Rock Hare",
-  "Klipspringer",
-  "Leopard",
-  "Lesser Bushbaby",
-  "Lion",
-  "Marabou Stork Bat",
-  "Marsh Mongoose",
-  "Meerkat",
-  "Meller’s Mongoose",
-  "Mountain Reedbuck",
-  "Natal Long-fingered Bat",
-  "Nile Rat",
-  "Nyala",
-  "Pangolin",
-  "Peter’s Epauletted Fruit Bat",
-  "Plaintive Free-tailed Bat",
-  "Plains Zebra",
-  "Red Duiker",
-  "Roan Antelope",
-  "Rock Dassie",
-  "Rusty-spotted Genet",
-  "Sable Antelope",
-  "Sharpe’s Grysbok",
-  "Side-striped Jackal",
-  "Slender Mongoose",
-  "Southern African Hedgehog",
-  "Southern African Spring Hare",
-  "Southern Reedbuck",
-  "Spotted Hyena",
-  "Steenbok",
-  "Striped Hyena",
-  "Suni",
-  "Tsessebe",
-  "Vervet Monkey",
-  "Waterbuck",
-  "White Rhinoceros",
-  "White-tailed Mongoose",
-  "Wahlberg’s Epauletted Fruit Bat",
-  "Wahlberg’s Velvet Gecko Mouse",
-  "Yellow Mongoose",
-  "African Bush Elephant",
-  "African Buffalo",
-  "Large-spotted Genet",
-  "Serval",
-  "African Civet",
-  "Banded Mongoose",
-  "Dwarf Mongoose",
-  "Mongoose (unidentified)",
-  "Scrub Hare",
-  "Springhare",
-  "Bushveld Gerbil",
-  "Woodland Dormouse",
-  "South African Ground Squirrel",
-  "Tree Squirrel",
-  "Striped Polecat",
-  "Zorilla",
-  "African Striped Weasel",
-  "Spotted-necked Otter",
-  "Brown Hyena",
-  "African Palm Civet",
-  "Large Grey Mongoose",
-  "Selous' Mongoose",
-  "Water Mongoose",
-  "Bushy-tailed Mongoose",
-  "Cape Ground Squirrel",
-  "Red Squirrel",
-  "Lesser Dwarf Shrew",
-  "Forest Shrew",
-  "Elephant Shrew",
-  "Natal Red Rock Rabbit",
-  "Wahlberg’s Fruit Bat",
-  "Noack’s Roundleaf Bat",
-  "Mauritian Tomb Bat",
-  "Little Free-tailed Bat",
-  "Schlieffen’s Bat",
-  "Horseshoe Bat",
-  "Leaf-nosed Bat",
-  "Mouse-eared Bat",
-  "Pipistrelle Bat",
-  "Yellow-bellied House Bat",
-  "Long-tailed Seps Bat",
-  "Rufous-eared Bat",
-  "Tomb Bat",
-  "Epauletted Fruit Bat"
-];
-
-const OTHER_ANIMALS = [
-  { name: "Common Ostrich", category: "Bird" },
-  { name: "Southern Ground Hornbill", category: "Bird" },
-  { name: "Lilac-breasted Roller", category: "Bird" },
-  { name: "Martial Eagle", category: "Bird" },
-  { name: "African Fish Eagle", category: "Bird" },
-  { name: "Saddle-billed Stork", category: "Bird" },
-  { name: "Secretarybird", category: "Bird" },
-  { name: "Pied Kingfisher", category: "Bird" },
-  { name: "Nile Crocodile", category: "Reptile" },
-  { name: "African Rock Python", category: "Reptile" },
-  { name: "Nile Monitor", category: "Reptile" }
+const ANIMAL_DATA = [
+  {
+    name: "African Bush Elephant",
+    category: "Mammal",
+    about:
+      "African bush elephants move through Kruger in family groups led by experienced matriarchs, and their long-term memory helps them revisit old water routes during dry months."
+  },
+  {
+    name: "Lion",
+    category: "Mammal",
+    about:
+      "Kruger lions spend much of the heat of the day resting, then become active in cooler hours when coordinated pride behavior gives them an advantage over larger prey."
+  },
+  {
+    name: "Leopard",
+    category: "Mammal",
+    about:
+      "Leopards in Kruger rely on stealth and strength, often dragging kills into trees where scavengers and competing predators struggle to reach them."
+  },
+  {
+    name: "Cheetah",
+    category: "Mammal",
+    about:
+      "Cheetahs favor open ground where explosive speed can be used in short bursts, and many sightings come from scanning roadsides near grassland edges."
+  },
+  {
+    name: "Spotted Hyena",
+    category: "Mammal",
+    about:
+      "Spotted hyenas are highly social and intelligent hunters, and their vocal whoops across Kruger often reveal clan activity before the animals are visible."
+  },
+  {
+    name: "Giraffe",
+    category: "Mammal",
+    about:
+      "Kruger giraffes browse high acacia leaves with prehensile tongues, giving them access to food above the reach of most other herbivores."
+  },
+  {
+    name: "Plains Zebra",
+    category: "Mammal",
+    about:
+      "Plains zebras usually feed in loose herds and stay alert with constant movement, while their stripe patterns make each individual recognizable at close range."
+  },
+  {
+    name: "Hippopotamus",
+    category: "Mammal",
+    about:
+      "Hippopotamuses spend daylight hours in water to stay cool, then travel out to graze at night, leaving broad paths between rivers and feeding grounds."
+  },
+  {
+    name: "Black Rhinoceros",
+    category: "Mammal",
+    about:
+      "Black rhinos are selective browsers with hooked lips adapted for shrubs, and most sightings are fleeting because they prefer thicker cover."
+  },
+  {
+    name: "White Rhinoceros",
+    category: "Mammal",
+    about:
+      "White rhinos are broad-lipped grazers that favor open areas, and their calm posture can be deceptive because they respond quickly when disturbed."
+  },
+  {
+    name: "African Buffalo",
+    category: "Mammal",
+    about:
+      "African buffalo gather in large, shifting herds whose collective vigilance and defensive behavior make them one of the most formidable grazers in the park."
+  },
+  {
+    name: "Impala",
+    category: "Mammal",
+    about:
+      "Impalas are among Kruger’s most adaptable antelope, switching between grazing and browsing and using dramatic leaps to evade predators."
+  },
+  {
+    name: "Greater Kudu",
+    category: "Mammal",
+    about:
+      "Greater kudu bulls carry spiral horns and rely on stillness and camouflage in woodland, where they can disappear surprisingly quickly among branches."
+  },
+  {
+    name: "Nyala",
+    category: "Mammal",
+    about:
+      "Nyala prefer dense riverine thickets, and their striped coats break up their outline so effectively that they are often seen only after movement."
+  },
+  {
+    name: "Warthog",
+    category: "Mammal",
+    about:
+      "Warthogs frequently kneel on their front knees while grazing and retreat tail-up to burrows, creating one of the most distinctive silhouettes on safari."
+  },
+  {
+    name: "Honey Badger",
+    category: "Mammal",
+    about:
+      "Honey badgers are solitary, tenacious foragers that investigate burrows, logs, and termite mounds with relentless energy regardless of their size."
+  },
+  {
+    name: "Banded Mongoose",
+    category: "Mammal",
+    about:
+      "Banded mongooses travel in busy family troops that communicate constantly while turning over leaf litter and soil in search of insects and small prey."
+  },
+  {
+    name: "African Wild Dog",
+    category: "Mammal",
+    about:
+      "African wild dogs are endurance hunters with exceptional teamwork, and when a pack is on the move their pace and focus are unmistakable."
+  },
+  {
+    name: "Vervet Monkey",
+    category: "Mammal",
+    about:
+      "Vervet monkeys use different alarm calls for different threats, giving nearby animals useful warning cues in mixed-species habitats."
+  },
+  {
+    name: "Chacma Baboon",
+    category: "Mammal",
+    about:
+      "Chacma baboons live in structured troops with clear social ranks, and they often use elevated rocks and trees as strategic lookout points."
+  },
+  {
+    name: "Common Ostrich",
+    category: "Bird",
+    about:
+      "The common ostrich is the world’s largest bird, and in Kruger its long stride and powerful legs let it cover open ground with remarkable efficiency."
+  },
+  {
+    name: "Southern Ground Hornbill",
+    category: "Bird",
+    about:
+      "Southern ground hornbills patrol the ground in family parties, probing for reptiles and invertebrates while staying in contact with deep resonant calls."
+  },
+  {
+    name: "Lilac-breasted Roller",
+    category: "Bird",
+    about:
+      "Lilac-breasted rollers often perch conspicuously on exposed branches, making them a colorful highlight as they dart down to catch insects."
+  },
+  {
+    name: "Martial Eagle",
+    category: "Bird",
+    about:
+      "Martial eagles soar high before descending with speed on medium-sized prey, and their presence signals healthy raptor habitat."
+  },
+  {
+    name: "African Fish Eagle",
+    category: "Bird",
+    about:
+      "African fish eagles are strongly tied to water and are often detected first by their iconic call echoing across dams and river channels."
+  },
+  {
+    name: "Saddle-billed Stork",
+    category: "Bird",
+    about:
+      "Saddle-billed storks hunt in shallow wetlands with measured steps, using precise bill strikes to capture fish, frogs, and aquatic invertebrates."
+  },
+  {
+    name: "Secretarybird",
+    category: "Bird",
+    about:
+      "Secretarybirds hunt mainly on foot in open savanna, where their long legs allow them to stamp and strike effectively at snakes and other prey."
+  },
+  {
+    name: "Pied Kingfisher",
+    category: "Bird",
+    about:
+      "Pied kingfishers are famous for hovering over water before diving, a fishing style that makes their feeding behavior easy to recognize."
+  },
+  {
+    name: "Nile Crocodile",
+    category: "Reptile",
+    about:
+      "Nile crocodiles regulate body temperature by shifting between sun and shade, remaining motionless for long periods before sudden bursts of power."
+  },
+  {
+    name: "African Rock Python",
+    category: "Reptile",
+    about:
+      "African rock pythons are ambush constrictors that rely on camouflage near watercourses and game paths where prey movement is predictable."
+  },
+  {
+    name: "Nile Monitor",
+    category: "Reptile",
+    about:
+      "Nile monitors are strong swimmers and opportunistic hunters, frequently seen basking on banks before slipping quickly into the water when approached."
+  }
 ];
 
 function toId(name) {
@@ -155,17 +204,8 @@ const WIKIPEDIA_TITLE_OVERRIDES = {
   "African Bush Elephant": ["African bush elephant"],
   "African Buffalo": ["African buffalo"],
   "Common Ostrich": ["Common ostrich"],
-  "Common Warthog": ["Warthog"],
   "Plains Zebra": ["Plains zebra"],
-  "Rock Dassie": ["Rock hyrax"],
-  "Civet": ["African civet"],
-  "Large-spotted Genet": ["Large-spotted genet"],
-  "Jameson’s Red Rock Hare": ["Jameson's red rock hare"],
-  "Sharpe’s Grysbok": ["Sharpe's grysbok"],
-  "Peter’s Epauletted Fruit Bat": ["Peters's epauletted fruit bat"],
-  "Wahlberg’s Epauletted Fruit Bat": ["Wahlberg's epauletted fruit bat"],
-  "Wahlberg’s Fruit Bat": ["Wahlberg's epauletted fruit bat"],
-  "Selous' Mongoose": ["Selous's mongoose"]
+  Warthog: ["Warthog"]
 };
 
 function buildFallbackImage(name, category) {
@@ -293,22 +333,11 @@ async function resolveAnimalImage(animal) {
 }
 
 const ANIMALS = [
-  ...MAMMAL_NAMES.filter((name) => !/bat/i.test(name)).map((name) => ({
-    id: toId(name),
-    name,
-    category: "Mammal",
-    image: null
-  })),
-  {
-    id: toId("Bat"),
-    name: "Bat",
-    category: "Mammal",
-    image: null
-  },
-  ...OTHER_ANIMALS.map((animal) => ({
+  ...ANIMAL_DATA.map((animal) => ({
     id: toId(animal.name),
     name: animal.name,
     category: animal.category,
+    about: animal.about,
     image: null
   }))
 ];
@@ -359,38 +388,6 @@ function saveState() {
 
 function createTripId() {
   return `trip-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
-}
-
-function createInterestingFact(animal) {
-  const mammalFacts = [
-    `${animal.name} often leaves behind tracks and dung clues that experienced guides use to follow it through Kruger.`,
-    `Many sightings of ${animal.name} happen in the cool early morning, when animals are more active and easier to spot.`,
-    `${animal.name} is part of Kruger's rich mammal diversity, which helps keep the park's food web in balance.`,
-    `When ${animal.name} is nearby, bird alarm calls and fresh spoor can reveal its presence before you see it.`
-  ];
-  const birdFacts = [
-    `${animal.name} is often easiest to identify by its shape and behaviour before you can confirm every colour detail.`,
-    `${animal.name} can be a great indicator species—bird activity often hints at water, prey, or movement in the area.`,
-    `${animal.name} sightings are often best near dawn, when birds call frequently and become more visible.`
-  ];
-  const reptileFacts = [
-    `${animal.name} is ectothermic, so sunning spots and warm surfaces are key places to look when temperatures rise.`,
-    `${animal.name} tends to be more active when environmental conditions are right, making timing important for sightings.`,
-    `${animal.name} plays an important role in Kruger ecosystems by helping regulate prey populations.`
-  ];
-
-  let pool = mammalFacts;
-  if (animal.category === "Bird") {
-    pool = birdFacts;
-  } else if (animal.category === "Reptile") {
-    pool = reptileFacts;
-  }
-
-  const index = animal.id
-    .split("")
-    .reduce((sum, char) => sum + char.charCodeAt(0), 0) % pool.length;
-
-  return pool[index];
 }
 
 function getSelectedTrip() {
@@ -455,7 +452,7 @@ function renderAnimals() {
     const cardBack = card.querySelector(".animal-back");
     const fact = card.querySelector(".animal-fact");
     card.querySelector("h3").textContent = animal.name;
-    fact.textContent = createInterestingFact(animal);
+    fact.textContent = animal.about;
 
     image.src = buildFallbackImage(animal.name, animal.category);
     image.alt = animal.name;
