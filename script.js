@@ -21,7 +21,6 @@ const BASE_ANIMAL_NAMES = [
   "Black-backed jackal",
   "Black rat",
   "Black rhinoceros",
-  "Blue wildebeest (Blou wildebeest)",
   "Botswana long-eared bat",
   "Brant’s climbing mouse",
   "Brown hyena",
@@ -147,7 +146,7 @@ const BASE_ANIMAL_NAMES = [
   "Striped polecat",
   "Sundevall’s leaf nosed bat",
   "Southern red-billed hornbill",
-  "Southern tree agama",
+  "Bloukop Koggelmander",
   "Southern yellow-billed hornbill",
   "Spotted eagle-owl",
   "Springbok",
@@ -273,7 +272,7 @@ const CATEGORY_OVERRIDES = {
   "Mozambique spitting cobra": "Reptile",
   "Puff adder": "Reptile",
   "Rock monitor": "Reptile",
-  "Southern tree agama": "Reptile",
+  "Bloukop Koggelmander": "Reptile",
   "Leopard tortoise": "Reptile"
 };
 const SORTED_ANIMAL_NAMES = [...COLLAPSED_ANIMAL_NAMES].sort((a, b) => a.localeCompare(b));
@@ -300,7 +299,6 @@ const WIKIPEDIA_TITLE_OVERRIDES = {
   "Kudu": ["Greater kudu", "Kudu"],
   "African elephant": ["African bush elephant", "African elephant"],
   "Gabar goshawk": ["Gabar goshawk", "Gabar hawk"],
-  "Blue wildebeest (Blou wildebeest)": ["Blue wildebeest", "Common wildebeest"],
   "Blou wildebeest": ["Blue wildebeest", "Common wildebeest"],
   "Rock hyrax (Dassie)": ["Rock hyrax", "Dassie"],
   "Wahlberg's eagle": ["Wahlberg's eagle"],
@@ -312,18 +310,18 @@ const WIKIPEDIA_TITLE_OVERRIDES = {
   "Ostrich": ["Common ostrich", "Ostrich"],
   "Rooihartebeest": ["Red hartebeest", "Rooihartebeest"],
   "Shrew": ["Shrew"],
-  "Southern tree agama": ["Southern tree agama"]
+  "Bloukop Koggelmander": ["Bloukop Koggelmander"]
 };
 
 const IMAGE_URL_OVERRIDES = {
-  "barn-owl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Tyto_alba_-British_Wildlife_Centre-8a.jpg/640px-Tyto_alba_-British_Wildlife_Centre-8a.jpg",
-  "brown-house-snake": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Boaedon_capensis_2.jpg/640px-Boaedon_capensis_2.jpg",
-  "cape-grysbok": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Raphicerus_melanotis.jpg/640px-Raphicerus_melanotis.jpg",
-  "leopard-tortoise": buildSpeciesIllustration("Leopard tortoise", "Stigmochelys pardalis", "#6d7d53", "🐢"),
-  "ostrich": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Ostrich_male_RWD.jpg/640px-Ostrich_male_RWD.jpg",
-  "rooihartebeest": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Alcelaphus_buselaphus2.jpg/640px-Alcelaphus_buselaphus2.jpg",
-  "shrew": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Common_shrew.jpg/640px-Common_shrew.jpg",
-  "southern-tree-agama": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Acanthocercus_atricollis_male.jpg/640px-Acanthocercus_atricollis_male.jpg"
+  "barn-owl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Tyto_alba_%28Scopoli%2C_1769%29.jpg/640px-Tyto_alba_%28Scopoli%2C_1769%29.jpg",
+  "brown-house-snake": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Lamprophis_fuliginosus_South_African_Brown_House_Snake_IMG_0620s.jpg/640px-Lamprophis_fuliginosus_South_African_Brown_House_Snake_IMG_0620s.jpg",
+  "cape-grysbok": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Raphicerus_melanotis_398168939.jpg/640px-Raphicerus_melanotis_398168939.jpg",
+  "leopard-tortoise": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Leopard_tortoise_%28Stigmochelys_pardalis%29_juvenile.jpg/640px-Leopard_tortoise_%28Stigmochelys_pardalis%29_juvenile.jpg",
+  "ostrich": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/North_African_Ostrich_-_Masai_Ostrich_%28Struthio_camelus_massaicus%29_-_Flickr_-_Lip_Kee.jpg/640px-North_African_Ostrich_-_Masai_Ostrich_%28Struthio_camelus_massaicus%29_-_Flickr_-_Lip_Kee.jpg",
+  "rooihartebeest": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Red_hartebeest%2C_Alcelaphus_buselaphus_caama_or_Alcelaphus_caama%2C_at_Krugersdorp_Game_Reserve%2C_Gauteng%2C_South_Africa_%2827410152941%29.jpg/640px-Red_hartebeest%2C_Alcelaphus_buselaphus_caama_or_Alcelaphus_caama%2C_at_Krugersdorp_Game_Reserve%2C_Gauteng%2C_South_Africa_%2827410152941%29.jpg",
+  "shrew": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/SorexAraneus_wwalas_01.JPG/640px-SorexAraneus_wwalas_01.JPG",
+  "bloukop-koggelmander": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Southern_Tree_Agama_%28Acanthocercus_atricollis%29_male_%2832702420284%29.jpg/640px-Southern_Tree_Agama_%28Acanthocercus_atricollis%29_male_%2832702420284%29.jpg"
 };
 
 function buildSpeciesIllustration(name, subtitle, accent, emoji) {
