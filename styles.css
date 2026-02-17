@@ -111,6 +111,23 @@ button.danger {
   backface-visibility: hidden;
 }
 
+.expand-image {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(18, 18, 18, 0.58);
+  color: #fff;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
 .animal-card.is-flipped img {
   transform: rotateY(180deg);
 }
@@ -175,6 +192,37 @@ button.danger {
 #seen-list {
   margin: 0.55rem 0 0;
   padding-left: 1rem;
+}
+
+.image-modal {
+  border: none;
+  border-radius: 12px;
+  padding: 0.5rem;
+  max-width: min(92vw, 900px);
+  background: #101510;
+}
+
+.image-modal::backdrop {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.image-modal img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  background: #1f2b1f;
+}
+
+.close-modal {
+  width: 2rem;
+  height: 2rem;
+  margin-left: auto;
+  margin-bottom: 0.4rem;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0;
 }
 
 @media (min-width: 700px) {
