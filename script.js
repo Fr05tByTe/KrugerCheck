@@ -258,12 +258,18 @@ async function resolveAnimalImage(animal) {
 }
 
 const ANIMALS = [
-  ...MAMMAL_NAMES.map((name) => ({
+  ...MAMMAL_NAMES.filter((name) => !/bat/i.test(name)).map((name) => ({
     id: toId(name),
     name,
     category: "Mammal",
     image: null
   })),
+  {
+    id: toId("Bat"),
+    name: "Bat",
+    category: "Mammal",
+    image: null
+  },
   ...OTHER_ANIMALS.map((animal) => ({
     id: toId(animal.name),
     name: animal.name,
@@ -279,7 +285,6 @@ const els = {
   tripSelect: document.getElementById("trip-select"),
   tripMeta: document.getElementById("trip-meta"),
   search: document.getElementById("search"),
-  categoryFilter: document.getElementById("category-filter"),
   animalList: document.getElementById("animal-list"),
   summaryText: document.getElementById("summary-text"),
   seenList: document.getElementById("seen-list"),
@@ -321,14 +326,8 @@ function createTripId() {
   return `trip-${Date.now()}-${Math.floor(Math.random() * 1e6)}`;
 }
 
-function populateCategories() {
-  const categories = [...new Set(ANIMALS.map((a) => a.category))].sort();
-  categories.forEach((category) => {
-    const option = document.createElement("option");
-    option.value = category;
-    option.textContent = category;
-    els.categoryFilter.append(option);
-  });
+function createInterestingFact(animal) {
+  return `${animal.name} is one of Kruger's well-known ${animal.category.toLowerCase()}s. Tap again to flip this card back and keep tracking your sightings.`;
 }
 
 function getSelectedTrip() {
@@ -376,23 +375,24 @@ function renderTrips() {
 
 function renderAnimals() {
   const searchTerm = els.search.value.trim().toLowerCase();
-  const category = els.categoryFilter.value;
   const trip = getSelectedTrip();
 
   const filtered = ANIMALS.filter((animal) => {
-    const categoryMatch = category === "all" || animal.category === category;
     const searchMatch = animal.name.toLowerCase().includes(searchTerm);
-    return categoryMatch && searchMatch;
+    return searchMatch;
   });
 
   els.animalList.innerHTML = "";
 
   filtered.forEach((animal) => {
     const card = els.cardTemplate.content.cloneNode(true);
+    const article = card.querySelector(".animal-card");
     const checkbox = card.querySelector("input[type='checkbox']");
     const image = card.querySelector("img");
+    const cardBack = card.querySelector(".animal-back");
+    const fact = card.querySelector(".animal-fact");
     card.querySelector("h3").textContent = animal.name;
-    card.querySelector(".animal-category").textContent = animal.category;
+    fact.textContent = createInterestingFact(animal);
 
     image.src = buildFallbackImage(animal.name, animal.category);
     image.alt = animal.name;
@@ -408,6 +408,13 @@ function renderAnimals() {
       saveState();
       renderSummary();
     });
+
+    const toggleFlip = () => {
+      article.classList.toggle("is-flipped");
+    };
+
+    image.addEventListener("click", toggleFlip);
+    cardBack.addEventListener("click", toggleFlip);
 
     els.animalList.append(card);
   });
@@ -425,7 +432,7 @@ function renderSummary() {
     .sort((a, b) => a.name.localeCompare(b.name))
     .forEach((animal) => {
       const li = document.createElement("li");
-      li.textContent = `${animal.name} (${animal.category})`;
+      li.textContent = animal.name;
       els.seenList.append(li);
     });
 
@@ -478,9 +485,7 @@ els.tripSelect.addEventListener("change", (event) => {
   rerender();
 });
 els.search.addEventListener("input", renderAnimals);
-els.categoryFilter.addEventListener("change", renderAnimals);
 
-populateCategories();
 rerender();
 saveState();
 
