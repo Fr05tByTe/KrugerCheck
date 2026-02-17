@@ -147,13 +147,114 @@ function toId(name) {
     .replace(/^-|-$/g, "");
 }
 
-function buildAnimalImageUrl(name, id) {
-  const tags = `${name},african,wildlife,safari,kruger`
-    .toLowerCase()
-    .replace(/[^a-z0-9, ]/g, "")
-    .replace(/\s+/g, ",");
+const IMAGE_CACHE_KEY = "kruger-animal-image-cache-v1";
+const animalImageCache = loadAnimalImageCache();
+const animalImageRequests = new Map();
 
-  return `https://loremflickr.com/640/420/${tags}?lock=${encodeURIComponent(id)}`;
+const WIKIPEDIA_TITLE_OVERRIDES = {
+  "African Bush Elephant": ["African bush elephant"],
+  "African Buffalo": ["African buffalo"],
+  "Common Ostrich": ["Common ostrich"],
+  "Common Warthog": ["Warthog"],
+  "Plains Zebra": ["Plains zebra"],
+  "Rock Dassie": ["Rock hyrax"],
+  "Civet": ["African civet"],
+  "Large-spotted Genet": ["Large-spotted genet"],
+  "Jameson’s Red Rock Hare": ["Jameson's red rock hare"],
+  "Sharpe’s Grysbok": ["Sharpe's grysbok"],
+  "Peter’s Epauletted Fruit Bat": ["Peters's epauletted fruit bat"],
+  "Wahlberg’s Epauletted Fruit Bat": ["Wahlberg's epauletted fruit bat"],
+  "Wahlberg’s Fruit Bat": ["Wahlberg's epauletted fruit bat"],
+  "Selous' Mongoose": ["Selous's mongoose"]
+};
+
+function buildFallbackImage(name, category) {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='800' height='520'><rect width='100%' height='100%' fill='#355c3b'/><text x='50%' y='44%' text-anchor='middle' fill='white' font-family='Arial' font-size='30'>${name}</text><text x='50%' y='56%' text-anchor='middle' fill='#d8efd9' font-family='Arial' font-size='22'>${category}</text><text x='50%' y='72%' text-anchor='middle' fill='#d8efd9' font-family='Arial' font-size='20'>Image unavailable</text></svg>`)}`;
+}
+
+function loadAnimalImageCache() {
+  try {
+    const raw = localStorage.getItem(IMAGE_CACHE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+function persistAnimalImageCache() {
+  localStorage.setItem(IMAGE_CACHE_KEY, JSON.stringify(animalImageCache));
+}
+
+function wikipediaTitlesFor(animal) {
+  const overrides = WIKIPEDIA_TITLE_OVERRIDES[animal.name] || [];
+  const cleanedName = animal.name.replace(/’/g, "'");
+  const candidates = [
+    ...overrides,
+    cleanedName,
+    `${cleanedName} (${animal.category.toLowerCase()})`,
+    cleanedName.replace(/\bCommon\s+/i, ""),
+    cleanedName.replace(/\bAfrican\s+/i, "")
+  ];
+
+  return [...new Set(candidates.filter(Boolean))];
+}
+
+async function fetchWikipediaThumbnail(title) {
+  const url = new URL("https://en.wikipedia.org/w/api.php");
+  url.searchParams.set("origin", "*");
+  url.searchParams.set("format", "json");
+  url.searchParams.set("action", "query");
+  url.searchParams.set("prop", "pageimages");
+  url.searchParams.set("piprop", "thumbnail");
+  url.searchParams.set("pithumbsize", "640");
+  url.searchParams.set("redirects", "1");
+  url.searchParams.set("titles", title);
+
+  const response = await fetch(url.toString());
+  if (!response.ok) {
+    return null;
+  }
+
+  const data = await response.json();
+  const pages = data.query && data.query.pages ? Object.values(data.query.pages) : [];
+  const withThumb = pages.find((page) => page && page.thumbnail && page.thumbnail.source);
+  return withThumb ? withThumb.thumbnail.source : null;
+}
+
+async function resolveAnimalImage(animal) {
+  const cached = animalImageCache[animal.id];
+  if (typeof cached === "string") {
+    return cached;
+  }
+
+  if (animalImageRequests.has(animal.id)) {
+    return animalImageRequests.get(animal.id);
+  }
+
+  const request = (async () => {
+    for (const title of wikipediaTitlesFor(animal)) {
+      try {
+        const thumbnail = await fetchWikipediaThumbnail(title);
+        if (thumbnail) {
+          animalImageCache[animal.id] = thumbnail;
+          persistAnimalImageCache();
+          return thumbnail;
+        }
+      } catch {
+        // Try next possible title.
+      }
+    }
+
+    animalImageCache[animal.id] = null;
+    persistAnimalImageCache();
+    return null;
+  })();
+
+  animalImageRequests.set(animal.id, request);
+  request.finally(() => {
+    animalImageRequests.delete(animal.id);
+  });
+  return request;
 }
 
 const ANIMALS = [
@@ -161,13 +262,13 @@ const ANIMALS = [
     id: toId(name),
     name,
     category: "Mammal",
-    image: buildAnimalImageUrl(name, toId(name))
+    image: null
   })),
   ...OTHER_ANIMALS.map((animal) => ({
     id: toId(animal.name),
     name: animal.name,
     category: animal.category,
-    image: buildAnimalImageUrl(animal.name, toId(animal.name))
+    image: null
   }))
 ];
 
@@ -293,11 +394,13 @@ function renderAnimals() {
     card.querySelector("h3").textContent = animal.name;
     card.querySelector(".animal-category").textContent = animal.category;
 
-    image.src = animal.image;
+    image.src = buildFallbackImage(animal.name, animal.category);
     image.alt = animal.name;
-    image.addEventListener("error", () => {
-      image.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='800' height='520'><rect width='100%' height='100%' fill='#567f45'/><text x='50%' y='50%' text-anchor='middle' fill='white' font-family='Arial' font-size='36'>${animal.name}</text></svg>`)}`;
-    }, { once: true });
+    resolveAnimalImage(animal).then((resolvedImage) => {
+      if (resolvedImage) {
+        image.src = resolvedImage;
+      }
+    });
 
     checkbox.checked = Boolean(trip.sightings[animal.id]);
     checkbox.addEventListener("change", () => {
